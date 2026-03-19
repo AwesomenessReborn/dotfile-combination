@@ -83,6 +83,8 @@ btop++ resource monitor config. Catppuccin-themed.
 3. **Nerd Font** — install a Nerd Font in your terminal (e.g. JetBrainsMono Nerd Font) for icons in nvim + oh-my-posh
 4. **conda/miniconda** — install separately: https://docs.conda.io/en/latest/miniconda.html
 5. **Ubuntu: `.zshrc.local`** — add `source ~/.zshrc.local` at the bottom of `~/.dotfiles/zsh/.zshrc` after first install
+6. **Tailscale** — `curl -fsSL https://tailscale.com/install.sh | sh` then `sudo tailscale up` to join your tailnet
+7. **OpenSSH server** — `sudo apt install -y openssh-server && sudo systemctl enable --now ssh` for remote access over Tailscale or LAN
 
 ## Adding new dotfiles
 
