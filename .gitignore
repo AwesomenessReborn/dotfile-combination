@@ -1,0 +1,19 @@
+# Secrets / keys — never commit
+ssh/id_*
+ssh/known_hosts*
+**/.env
+**/*.pem
+**/*.key
+
+# macOS
+.DS_Store
+
+# Neovim runtime data (not config)
+nvim/.git/
+
+# Backups created by install.sh
+*.bak
+*.backup
+
+# btop themes (optional — large, can be reinstalled)
+# btop/themes/
