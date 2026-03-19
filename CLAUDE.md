@@ -35,6 +35,10 @@ The script auto-detects the OS (macOS vs Ubuntu/Debian), installs dependencies, 
 | `nvim/` | `~/.config/nvim` |
 | `ohmyposh/` | `~/.config/ohmyposh` |
 | `btop/` | `~/.config/btop` |
+| `neofetch/config.conf` | `~/.config/neofetch/config.conf` |
+| `htop/htoprc` | `~/.config/htop/htoprc` |
+| `claude/CLAUDE.md` | `~/.claude/CLAUDE.md` |
+| `claude/settings.json` | `~/.claude/settings.json` |
 
 ## Architecture
 

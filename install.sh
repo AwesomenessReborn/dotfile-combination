@@ -40,7 +40,7 @@ install_deps() {
     fi
 
     sudo apt-get install -y \
-      neovim tmux zsh fzf ripgrep fd-find curl git btop neofetch
+      neovim tmux zsh fzf ripgrep fd-find curl git btop neofetch htop
 
     # zsh-autosuggestions + zsh-syntax-highlighting (no brew on Linux)
     ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.zsh}"
@@ -109,6 +109,13 @@ create_symlinks() {
   link_file "$DOTFILES/nvim"              "$HOME/.config/nvim"
   link_file "$DOTFILES/ohmyposh"          "$HOME/.config/ohmyposh"
   link_file "$DOTFILES/btop"              "$HOME/.config/btop"
+  link_file "$DOTFILES/neofetch/config.conf" "$HOME/.config/neofetch/config.conf"
+  link_file "$DOTFILES/htop/htoprc"       "$HOME/.config/htop/htoprc"
+
+  # Claude Code config
+  mkdir -p "$HOME/.claude"
+  link_file "$DOTFILES/claude/CLAUDE.md"    "$HOME/.claude/CLAUDE.md"
+  link_file "$DOTFILES/claude/settings.json" "$HOME/.claude/settings.json"
 }
 
 # ─── tmux plugin manager (tpm) ───────────────────────────────────────────────

@@ -13,6 +13,9 @@ Personal dotfiles for macOS and Ubuntu, managed via symlinks.
 ├── ssh/            SSH client config (no private keys)
 ├── ohmyposh/       oh-my-posh prompt theme (default.json)
 ├── btop/           btop resource monitor config
+├── neofetch/       neofetch display config
+├── htop/           htop process monitor config
+├── claude/         Claude Code global instructions + settings
 ├── install.sh      Bootstrap script — run on any new machine
 └── README.md       This file
 ```
@@ -76,6 +79,19 @@ Custom oh-my-posh prompt theme showing: time, shell, exit code, execution time, 
 ### `btop/`
 btop++ resource monitor config. Catppuccin-themed.
 
+### `neofetch/`
+Custom neofetch display config showing OS, CPU, GPU, memory, shell, and terminal info.
+
+### `htop/`
+htop process monitor preferences — column layout, sort order, color scheme.
+
+### `claude/`
+Claude Code global config, symlinked into `~/.claude/`:
+- `CLAUDE.md` — global instructions (storage strategy, Python/conda paths, Node/fnm paths for non-interactive shells)
+- `settings.json` — statusline command (shows time, cwd, git branch, Python env, model, token usage) + enabled plugins
+
+> **Note:** `~/.claude/` runtime state (history, sessions, tasks, plans) is ephemeral and not tracked.
+
 ## Manual steps post-install
 
 1. **SSH key** — generate and add: `ssh-keygen -t ed25519 -C "you@email.com"` then add public key to GitHub
@@ -99,3 +115,4 @@ ln -s ~/.dotfiles/foo/config.toml ~/.config/foo/config.toml
 - SSH private keys are **not** tracked (`ssh/id_*` is in `.gitignore`)
 - API keys / tokens → use a `.env` file + add to `.gitignore`
 - Machine-specific settings → use `~/.zshrc.local` (not tracked)
+- **rclone** (`~/.config/rclone/rclone.conf`) contains OAuth tokens — **not tracked**. Set up manually: `rclone config` and authenticate with Google Drive
