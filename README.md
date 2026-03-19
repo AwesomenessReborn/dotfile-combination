@@ -1,11 +1,11 @@
 # dotfiles
 
-Personal dotfiles for macOS and Ubuntu, managed via symlinks.
+Personal dotfiles for macOS and Ubuntu, tracked for transfer between machines.
 
 ## Structure
 
 ```
-~/.dotfiles/
+dotfile-combination/
 ├── nvim/           Neovim config (kickstart.nvim + lazy.nvim, LSP, Telescope)
 ├── tmux/           tmux config (catppuccin theme, tpm plugins)
 ├── zsh/            Zsh config (.zshrc, .zprofile)
@@ -13,33 +13,14 @@ Personal dotfiles for macOS and Ubuntu, managed via symlinks.
 ├── ssh/            SSH client config (no private keys)
 ├── ohmyposh/       oh-my-posh prompt theme (default.json)
 ├── btop/           btop resource monitor config
-├── install.sh      Bootstrap script — run on any new machine
 └── README.md       This file
 ```
 
-## Quick start on a new machine
+## Usage
 
-```bash
-# 1. Clone
-git clone https://github.com/YOUR_USERNAME/dotfiles.git ~/.dotfiles
+Clone the repo and manually copy configs to their standard locations on the target machine. See the config details below for where each file belongs.
 
-# 2. Run installer
-cd ~/.dotfiles
-chmod +x install.sh
-./install.sh
-```
-
-`install.sh` is idempotent — safe to run multiple times.
-
-## What install.sh does
-
-1. Detects OS (macOS or Ubuntu/Debian)
-2. Installs dependencies:
-   - **macOS**: via Homebrew (`neovim`, `tmux`, `zsh`, `fzf`, `zsh-autosuggestions`, `zsh-syntax-highlighting`, `ripgrep`, `fd`, `oh-my-posh`, `btop`, `neofetch`, `fnm`)
-   - **Ubuntu**: via apt + manual installs for oh-my-posh, fnm, and zsh plugins
-3. Creates symlinks from `~/.dotfiles/*` → original config locations
-4. Installs [tpm](https://github.com/tmux-plugins/tpm) (tmux plugin manager)
-5. Sets zsh as the default shell
+> **Legacy script:** `install.sh` exists as an optional convenience script that can auto-install dependencies and create symlinks, but the primary workflow is manual copy/transfer.
 
 ## Config details
 
@@ -57,7 +38,7 @@ Key plugins: Telescope, blink.cmp, conform.nvim, nvim-treesitter, tokyonight col
 - `.zprofile` — Homebrew env (macOS)
 - `.zshrc` — conda, oh-my-posh, fzf, fnm, zsh-autosuggestions, backup status widget
 
-> **macOS-specific paths in `.zshrc`:** Homebrew at `/opt/homebrew`, miniconda at `~/miniconda3`, fnm via brew. On Ubuntu, `install.sh` creates `~/.zshrc.local` with Linux-compatible overrides.
+> **macOS-specific paths in `.zshrc`:** Homebrew at `/opt/homebrew`, miniconda at `~/miniconda3`, fnm via brew. On Ubuntu, create a `~/.zshrc.local` with Linux-compatible overrides and source it from `.zshrc`.
 
 ### `git/`
 - `.gitconfig` — name, email, default branch `main`, gh credential helper
@@ -82,16 +63,16 @@ btop++ resource monitor config. Catppuccin-themed.
 2. **gh CLI auth** — `gh auth login`
 3. **Nerd Font** — install a Nerd Font in your terminal (e.g. JetBrainsMono Nerd Font) for icons in nvim + oh-my-posh
 4. **conda/miniconda** — install separately: https://docs.conda.io/en/latest/miniconda.html
-5. **Ubuntu: `.zshrc.local`** — add `source ~/.zshrc.local` at the bottom of `~/.dotfiles/zsh/.zshrc` after first install
+5. **Ubuntu: `.zshrc.local`** — create `~/.zshrc.local` with Linux overrides and add `source ~/.zshrc.local` to the bottom of `~/.zshrc`
 6. **Tailscale** — `curl -fsSL https://tailscale.com/install.sh | sh` then `sudo tailscale up` to join your tailnet
 7. **OpenSSH server** — `sudo apt install -y openssh-server && sudo systemctl enable --now ssh` for remote access over Tailscale or LAN
 
 ## Adding new dotfiles
 
+Copy the config into the repo under a descriptive directory:
+
 ```bash
-cp ~/.config/foo/config.toml ~/.dotfiles/foo/config.toml
-ln -s ~/.dotfiles/foo/config.toml ~/.config/foo/config.toml
-# then add link_file line to install.sh
+cp ~/.config/foo/config.toml dotfile-combination/foo/config.toml
 ```
 
 ## Secrets / sensitive files

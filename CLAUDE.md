@@ -4,27 +4,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Repo Is
 
-Personal dotfiles repository that manages development environment configurations for macOS and Ubuntu/Linux. All configs live in `~/.dotfiles/` and are symlinked to their standard locations via `install.sh`.
+Personal dotfiles repository that **tracks and transfers** development environment configurations between macOS and Ubuntu/Linux machines. This is not a symlink manager — configs are stored here as a reference and manually copied to new systems as needed.
 
-## Installation
+An optional legacy `install.sh` script exists that can automate dependency installation and symlinking, but the primary workflow is manual transfer.
 
-```bash
-# Bootstrap everything (idempotent — safe to run multiple times)
-bash install.sh
-```
+## File Mapping
 
-The script auto-detects the OS (macOS vs Ubuntu/Debian), installs dependencies, creates symlinks, and sets zsh as the default shell. Existing configs are backed up with a `.bak` suffix before symlinking.
+Where each config in the repo belongs on the system:
 
-### Post-install steps (manual)
-1. Restart shell: `exec zsh`
-2. Install tmux plugins: open tmux, press `prefix + I`
-3. Open `nvim` — lazy.nvim auto-installs plugins on first launch
-4. Install a Nerd Font for icon support in the prompt and nvim
-5. Linux only: review `~/.zshrc.local` and source it from `~/.zshrc`
-
-## Symlink Mapping
-
-| Source (in repo) | Destination |
+| Repo path | System destination |
 |---|---|
 | `zsh/.zshrc` | `~/.zshrc` |
 | `zsh/.zprofile` | `~/.zprofile` |
@@ -57,7 +45,7 @@ Mouse enabled, status bar at top, true color, Catppuccin Mocha theme via tpm. Vi
 - `ignore`: Global gitignore — currently ignores `.claude/settings.local.json`
 
 ### Platform differences
-macOS paths are hardcoded in `.zshrc` and `.gitconfig` (Homebrew at `/opt/homebrew`). Linux overrides should go in `~/.zshrc.local`, which the install script creates automatically.
+macOS paths are hardcoded in `.zshrc` and `.gitconfig` (Homebrew at `/opt/homebrew`). Linux overrides should go in `~/.zshrc.local`.
 
 ## Secrets & `.gitignore`
 
