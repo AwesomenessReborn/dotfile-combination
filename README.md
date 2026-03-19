@@ -13,6 +13,9 @@ dotfile-combination/
 ├── ssh/            SSH client config (no private keys)
 ├── ohmyposh/       oh-my-posh prompt theme (default.json)
 ├── btop/           btop resource monitor config
+├── neofetch/       neofetch display config
+├── htop/           htop process monitor config
+├── claude/         Claude Code global instructions + settings
 └── README.md       This file
 ```
 
@@ -20,7 +23,7 @@ dotfile-combination/
 
 Clone the repo and manually copy configs to their standard locations on the target machine. See the config details below for where each file belongs.
 
-> **Legacy script:** `install.sh` exists as an optional convenience script that can auto-install dependencies and create symlinks, but the primary workflow is manual copy/transfer.
+> **Legacy script:** `archive/install.sh` exists as an optional convenience script that can auto-install dependencies and create symlinks, but the primary workflow is manual copy/transfer.
 
 ## Config details
 
@@ -57,6 +60,15 @@ Custom oh-my-posh prompt theme showing: time, shell, exit code, execution time, 
 ### `btop/`
 btop++ resource monitor config. Catppuccin-themed.
 
+### `neofetch/`
+Custom neofetch display config showing OS, CPU, GPU, memory, shell, and terminal info.
+
+### `htop/`
+htop process monitor preferences — column layout, sort order, color scheme.
+
+### `claude/`
+Claude Code global config reference (macOS paths — adjust for Linux). Not required for machine setup.
+
 ## Manual steps post-install
 
 1. **SSH key** — generate and add: `ssh-keygen -t ed25519 -C "you@email.com"` then add public key to GitHub
@@ -80,3 +92,4 @@ cp ~/.config/foo/config.toml dotfile-combination/foo/config.toml
 - SSH private keys are **not** tracked (`ssh/id_*` is in `.gitignore`)
 - API keys / tokens → use a `.env` file + add to `.gitignore`
 - Machine-specific settings → use `~/.zshrc.local` (not tracked)
+- **rclone** (`~/.config/rclone/rclone.conf`) contains OAuth tokens — **not tracked**. Set up manually: `rclone config` and authenticate with Google Drive

@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Personal dotfiles repository that **tracks and transfers** development environment configurations between macOS and Ubuntu/Linux machines. This is not a symlink manager — configs are stored here as a reference and manually copied to new systems as needed.
 
-An optional legacy `install.sh` script exists that can automate dependency installation and symlinking, but the primary workflow is manual transfer.
+An optional legacy script exists in `archive/install.sh` that can automate dependency installation and symlinking, but the primary workflow is manual transfer.
 
 ## File Mapping
 
@@ -23,6 +23,10 @@ Where each config in the repo belongs on the system:
 | `nvim/` | `~/.config/nvim` |
 | `ohmyposh/` | `~/.config/ohmyposh` |
 | `btop/` | `~/.config/btop` |
+| `neofetch/config.conf` | `~/.config/neofetch/config.conf` |
+| `htop/htoprc` | `~/.config/htop/htoprc` |
+| `claude/CLAUDE.md` | `~/.claude/CLAUDE.md` |
+| `claude/settings.json` | `~/.claude/settings.json` |
 
 ## Architecture
 
