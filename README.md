@@ -56,7 +56,11 @@ Key plugins: Telescope, blink.cmp, conform.nvim, nvim-treesitter, tokyonight col
 > **macOS-specific:** `UseKeychain yes` is a macOS-only directive. Remove it on Linux.
 
 ### `ohmyposh/`
-Custom oh-my-posh prompt theme showing: time, shell, exit code, execution time, git status, Python venv, Node version, full path. Requires a [Nerd Font](https://www.nerdfonts.com/).
+Custom oh-my-posh prompt theme — see `ohmyposh/README.md` for full segment docs and install instructions.
+- 4-line prompt: time+shell → exit code+exec time+git+python+node → full path → `❯`
+- Works on macOS and Linux (zsh/bash)
+- Requires a Nerd Font (RobotoMono Nerd Font recommended — matches `iterm2/` config)
+- Install on Linux: `curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin`
 
 ### `btop/`
 btop++ resource monitor config. Catppuccin-themed.
