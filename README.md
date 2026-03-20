@@ -15,6 +15,7 @@ dotfile-combination/
 ├── btop/           btop resource monitor config
 ├── neofetch/       neofetch display config
 ├── htop/           htop process monitor config
+├── iterm2/         iTerm2 color scheme (.itermcolors) + Linux equivalents (Alacritty, Kitty)
 ├── claude/         Claude Code global instructions + settings
 └── README.md       This file
 ```
@@ -65,6 +66,15 @@ Custom neofetch display config showing OS, CPU, GPU, memory, shell, and terminal
 
 ### `htop/`
 htop process monitor preferences — column layout, sort order, color scheme.
+
+### `iterm2/`
+- `Default-dark.itermcolors` / `Default-light.itermcolors` — importable iTerm2 color presets
+- `alacritty-colors.toml` — same palette for Alacritty on Linux
+- `kitty-colors.conf` — same palette for Kitty on Linux
+- Font: **RobotoMono Nerd Font** at 12pt (install from [nerdfonts.com](https://www.nerdfonts.com/font-downloads))
+- 5% transparency, blinking cursor, bold+italic enabled, 120×45 default window
+
+> **Linux:** iTerm2 is macOS-only. Recommended Linux equivalents: **Kitty** (feature-rich) or **Alacritty** (minimal). See `iterm2/README.md` for full setup instructions.
 
 ### `claude/`
 Claude Code global config reference (macOS paths — adjust for Linux). Not required for machine setup.

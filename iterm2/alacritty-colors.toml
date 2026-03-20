@@ -1,0 +1,54 @@
+# Alacritty color scheme — ported from iTerm2 "Default" profile (dark mode)
+# Font: RobotoMonoNFM-Rg 12 → on Linux, install Roboto Mono Nerd Font
+#
+# Usage:
+#   1. Install Roboto Mono Nerd Font: https://www.nerdfonts.com/font-downloads
+#   2. Copy the [colors] section (and [font]) into ~/.config/alacritty/alacritty.toml
+#   3. Or include this file: import = ["~/.config/alacritty/iterm2-default-dark.toml"]
+
+[font]
+size = 12.0
+
+[font.normal]
+family = "RobotoMono Nerd Font Mono"
+style = "Regular"
+
+[font.bold]
+family = "RobotoMono Nerd Font Mono"
+style = "Bold"
+
+[font.italic]
+family = "RobotoMono Nerd Font Mono"
+style = "Italic"
+
+[colors.primary]
+background = "#15191f"
+foreground = "#dcdcdc"
+
+[colors.cursor]
+text   = "#000000"
+cursor = "#ffffff"
+
+[colors.selection]
+text       = "#000000"
+background = "#b3d7ff"
+
+[colors.normal]
+black   = "#14191e"
+red     = "#b43c2a"
+green   = "#00c200"
+yellow  = "#c7c400"
+blue    = "#2744c7"
+magenta = "#c040be"
+cyan    = "#00c5c7"
+white   = "#c7c7c7"
+
+[colors.bright]
+black   = "#686868"
+red     = "#dd7975"
+green   = "#58e790"
+yellow  = "#ece100"
+blue    = "#a7abf2"
+magenta = "#e17ee1"
+cyan    = "#60fdff"
+white   = "#ffffff"
