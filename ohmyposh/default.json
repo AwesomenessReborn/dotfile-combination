@@ -22,6 +22,18 @@
           "style": "plain"
         },
         {
+          "type": "session",
+          "style": "plain",
+          "foreground": "#98C379",
+          "template": " {{ .UserName }}@{{ .HostName }}"
+        },
+        {
+          "type": "os",
+          "style": "plain",
+          "foreground": "#ABB2BF",
+          "template": " {{ .Icon }}"
+        },
+        {
           "properties": {
             "cache_duration": "none",
             "mapped_shell_names": {
@@ -35,12 +47,6 @@
           "foreground": "#E06C75",
           "type": "shell",
           "style": "plain"
-        },
-        {
-          "type": "session",
-          "style": "plain",
-          "foreground": "#98C379",
-          "template": " {{ .UserName }}@{{ .HostName }}"
         }
       ],
       "newline": true
