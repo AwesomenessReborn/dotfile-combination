@@ -58,14 +58,19 @@ _show_backup_status() {
 
   # SSD usage
   local ssd_info
-  ssd_info=$(df -h / | awk 'NR==2 {print $3 " / " $2 " (" $5 ")"}')
+  ssd_info=$(df -k /System/Volumes/Data | awk 'NR==2 {printf "%.2f GB used / %.2f GB total (%s)", $3/1048576, $2/1048576, $5}')
 
   if pgrep -x rclone > /dev/null 2>&1; then
-    echo -e "  ${cyan}󰕒 Backup${nc}  syncing now...  ${dim}|  SSD: $ssd_info${nc}"
+    echo -e "  ${cyan}󰕒 Backup${nc}  syncing now..."
+    echo -e "  ${dim}SSD: $ssd_info${nc}"
   elif [ "$backup_status" = "success" ]; then
-    echo -e "  ${green}󰕒 Backup${nc}  ✓ $time_ago  ${dim}—  $backup_files files / $backup_size  |  SSD: $ssd_info${nc}"
+    echo -e "  ${green}󰕒 Backup${nc}  ✓ $time_ago"
+    echo -e "  ${dim}$backup_files files backed up, totalling $backup_size transferred to Google Drive.${nc}"
+    echo -e "  ${dim}SSD: $ssd_info${nc}"
   else
-    echo -e "  ${red}󰕒 Backup${nc}  ✗ FAILED $time_ago  ${dim}—  check backup.log  |  SSD: $ssd_info${nc}"
+    echo -e "  ${red}󰕒 Backup${nc}  ✗ FAILED $time_ago"
+    echo -e "  ${dim}check backup.log${nc}"
+    echo -e "  ${dim}SSD: $ssd_info${nc}"
   fi
 }
 _show_backup_status
