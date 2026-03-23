@@ -13,7 +13,7 @@ Custom prompt theme for [oh-my-posh](https://ohmyposh.dev/) — works on macOS (
 The prompt renders across multiple lines:
 
 ```
-[15:04]  zsh
+[15:04] hari@macbook  zsh
  x0  123ms   main  ✎ 1 | ✔ 2    3.12.1   v24.11.0
  ~/Dev/projects/my-repo
 ❯
@@ -21,7 +21,7 @@ The prompt renders across multiple lines:
 
 | Line | What it shows |
 |---|---|
-| 1 | Time (`HH:MM`) + shell name |
+| 1 | Time (`HH:MM`) · `user@hostname` · OS icon · shell name |
 | 2 | Exit code · execution time · git status · Python venv+version · Node version |
 | 3 | Full current path |
 | 4 | Prompt character (`❯`, red `!` if root) |
@@ -32,6 +32,8 @@ The prompt renders across multiple lines:
 | Segment | Color | Notes |
 |---|---|---|
 | Time | `#E5C07B` (gold) | `HH:MM` format |
+| Session | `#98C379` (green) | `user@hostname` — distinguishes Mac vs Linux at a glance when SSHing |
+| OS | `#ABB2BF` (grey) | OS icon via Nerd Font (e.g. Apple, Linux Tux) |
 | Shell | `#E06C75` (red) | Shows `zsh`, `bash`, etc. |
 
 ### Line 2
