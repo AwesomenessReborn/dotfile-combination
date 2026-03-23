@@ -35,6 +35,12 @@
           "foreground": "#E06C75",
           "type": "shell",
           "style": "plain"
+        },
+        {
+          "type": "session",
+          "style": "plain",
+          "foreground": "#98C379",
+          "template": " {{ .UserName }}@{{ .HostName }}"
         }
       ],
       "newline": true
