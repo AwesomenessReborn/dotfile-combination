@@ -22,6 +22,20 @@ source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 neofetch
 
+# Linux disk display (per-partition — macOS uses _show_backup_status below instead)
+# _print_disk() {
+#   local mount=$1 label=$2
+#   local dim='\033[2m' nc='\033[0m'
+#   df -B1 "$mount" | awk -v label="$label" -v dim="$dim" -v nc="$nc" 'NR==2 {
+#     used=$3/1073741824; total=$2/1073741824; pct=int($3/$2*100)
+#     filled=int(pct/10); empty=10-filled
+#     bar=""; for(i=0;i<filled;i++) bar=bar"█"; for(i=0;i<empty;i++) bar=bar"░"
+#     printf "  %s󰋊 %-6s %5.1fG / %5.1fG  (%3d%%)  [%s]%s\n", dim, label, used, total, pct, bar, nc
+#   }'
+# }
+# _print_disk /     "/"
+# _print_disk /home "/home"
+
 # Dev backup sync status
 _show_backup_status() {
   local status_file="$HOME/Dev/backup-framework/last-backup-status"
