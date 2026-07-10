@@ -6,23 +6,25 @@ else
     export PATH="$HOME/miniconda3/bin:$PATH"
 fi
 
-eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/default.json)"
+command -v oh-my-posh >/dev/null 2>&1 && eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/default.json)"
 
-source <(fzf --zsh)
+command -v fzf >/dev/null 2>&1 && source <(fzf --zsh)
 
-# fnm
+# fnm (node version manager) — macOS via brew, Linux via ~/.local/bin
 FNM_PATH="/opt/homebrew/opt/fnm/bin"
-if [ -d "$FNM_PATH" ]; then
-  eval "`fnm env`"
-fi
+[[ -d "$FNM_PATH" ]] && export PATH="$FNM_PATH:$PATH"
+command -v fnm >/dev/null 2>&1 && eval "$(fnm env --use-on-cd --shell zsh)"
 
-eval "$(fnm env --use-on-cd --shell zsh)"
+# zsh-autosuggestions — brew (macOS) or system/user paths (Linux)
+for _zsh_autosuggest in \
+  "${HOMEBREW_PREFIX:-/opt/homebrew}/share/zsh-autosuggestions/zsh-autosuggestions.zsh" \
+  /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh \
+  "$HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"; do
+  [[ -r "$_zsh_autosuggest" ]] && source "$_zsh_autosuggest" && break
+done
+unset _zsh_autosuggest
 
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-neofetch
-
-# Linux disk display (per-partition — macOS uses _show_backup_status below instead)
+# Linux disk display (per-partition — commented; enable on Linux via ~/.zshrc.local)
 # _print_disk() {
 #   local mount=$1 label=$2
 #   local dim='\033[2m' nc='\033[0m'
@@ -36,60 +38,86 @@ neofetch
 # _print_disk /     "/"
 # _print_disk /home "/home"
 
-# Dev backup sync status
-_show_backup_status() {
-  local status_file="$HOME/Dev/backup-framework/last-backup-status"
-  local green='\033[0;32m'
-  local red='\033[0;31m'
-  local yellow='\033[1;33m'
-  local cyan='\033[0;36m'
-  local dim='\033[2m'
-  local nc='\033[0m'
+# Backup dashboard widget (macOS only — guarded so a missing file doesn't error)
+if [[ -r "$HOME/Dev/backup-framework/terminal-dashboard.zsh" ]]; then
+  source "$HOME/Dev/backup-framework/terminal-dashboard.zsh"
+  terminal_dashboard_startup
+fi
 
-  if [ ! -f "$status_file" ]; then
-    echo -e "  ${yellow}󰕒 Backup${nc}  never run  —  run backup-to-gdrive.sh to start"
-    return
+
+export STM32_PRG_PATH=/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/STM32CubeProgrammer.app/Contents/MacOs/bin
+
+mactopb() {
+  if [[ -t 2 ]]; then
+    printf "\n⚠️  Using build-from-source mactop\n" >&2
+    sleep 1.5
   fi
+  /Users/hareee234/Dev/projects/public/mactop/mactop/mactop "$@"
+}
 
-  local backup_status backup_time backup_files backup_size
-  backup_status=$(grep 'status=' "$status_file" | cut -d= -f2)
-  backup_time=$(grep 'time=' "$status_file" | cut -d= -f2)
-  backup_files=$(grep 'files=' "$status_file" | cut -d= -f2)
-  backup_size=$(grep 'size=' "$status_file" | cut -d= -f2)
+mactop_build_if_needed() {
+  local repo="/Users/hareee234/Dev/projects/public/mactop/mactop"
+  local bin="$repo/mactop"
+  local newest_source=""
+  local src
+  local -a build_inputs
 
-  # Relative time (e.g. "3h ago", "2d ago")
-  local time_ago=""
-  if [ -n "$backup_time" ]; then
-    local now backup_epoch diff
-    now=$(date +%s)
-    backup_epoch=$(date -j -f "%Y-%m-%d %H:%M" "$backup_time" +%s 2>/dev/null)
-    diff=$(( (now - backup_epoch) / 60 ))
-    if   [ $diff -lt 60 ];   then time_ago="${diff}m ago"
-    elif [ $diff -lt 1440 ]; then time_ago="$(( diff / 60 ))h ago"
-    else                          time_ago="$(( diff / 1440 ))d ago"
+  build_inputs=(
+    "$repo"/**/*.go(N)
+    "$repo"/go.mod(N)
+    "$repo"/go.sum(N)
+    "$repo"/Makefile(N)
+  )
+
+  if [[ ! -x "$bin" ]]; then
+    if [[ -t 2 ]]; then
+      printf "Binary missing; building mactop from source...\n" >&2
+    fi
+  else
+    for src in "${build_inputs[@]}"; do
+      if [[ -z "$newest_source" || "$src" -nt "$newest_source" ]]; then
+        newest_source="$src"
+      fi
+    done
+
+    if [[ -n "$newest_source" && ! "$bin" -nt "$newest_source" ]]; then
+      if [[ -t 2 ]]; then
+        printf "Source changes detected; rebuilding mactop...\n" >&2
+      fi
+    else
+      if [[ -t 2 ]]; then
+        printf "Build is up to date; skipping rebuild.\n" >&2
+      fi
+      return 0
     fi
   fi
 
-  # SSD usage
-  local ssd_info
-  ssd_info=$(df -k /System/Volumes/Data | awk 'NR==2 {printf "%.2f GB used / %.2f GB total (%s)", $3/1048576, $2/1048576, $5}')
-
-  if pgrep -x rclone > /dev/null 2>&1; then
-    echo -e "  ${cyan}󰕒 Backup${nc}  syncing now..."
-    echo -e "  ${dim}SSD: $ssd_info${nc}"
-  elif [ "$backup_status" = "success" ]; then
-    echo -e "  ${green}󰕒 Backup${nc}  ✓ $time_ago"
-    echo -e "  ${dim}$backup_files files backed up, totalling $backup_size transferred to Google Drive.${nc}"
-    echo -e "  ${dim}SSD: $ssd_info${nc}"
-  else
-    echo -e "  ${red}󰕒 Backup${nc}  ✗ FAILED $time_ago"
-    echo -e "  ${dim}check backup.log${nc}"
-    echo -e "  ${dim}SSD: $ssd_info${nc}"
-  fi
+  (
+    cd "$repo" || exit 1
+    /opt/homebrew/bin/go build -o mactop main.go
+  )
 }
-_show_backup_status
 
-# Git dirty check — tree view (runs as separate script to avoid DEBUG trap interference)
-zsh "$HOME/Dev/backup-framework/show-git-status.zsh"
-echo
+mactopbr() {
+  if [[ -t 2 ]]; then
+    printf "\n⚠️  Using smart rebuild for source mactop\n" >&2
+    sleep 1.5
+  fi
+  mactop_build_if_needed || return 1
+  /Users/hareee234/Dev/projects/public/mactop/mactop/mactop "$@"
+}
 
+# mac-health: low-noise system health check (throttled to once per 3h, skips tmux)
+if [[ -o interactive && -z "${TMUX:-}" ]] && command -v mac-health >/dev/null 2>&1; then
+  MAC_HEALTH_LAST="/tmp/.mac_health_last_run_${USER}"
+  MAC_HEALTH_NOW="$(date +%s)"
+  MAC_HEALTH_INTERVAL=$((3 * 60 * 60))
+
+  if [[ ! -f "$MAC_HEALTH_LAST" ]] || (( MAC_HEALTH_NOW - $(cat "$MAC_HEALTH_LAST" 2>/dev/null || echo 0) > MAC_HEALTH_INTERVAL )); then
+    echo "$MAC_HEALTH_NOW" > "$MAC_HEALTH_LAST"
+    mac-health
+  fi
+fi
+
+# Per-machine overrides (not tracked in dotfiles) — Linux paths, work-box tweaks, etc.
+[[ -r "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"

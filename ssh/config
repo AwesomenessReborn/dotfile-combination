@@ -1,5 +1,13 @@
 Host *
+  IgnoreUnknown UseKeychain
   AddKeysToAgent yes
   UseKeychain yes
   IdentityFile ~/.ssh/id_ed25519
+
+Host personal-linux HARI-LINUX-PC
+      HostName 100.106.106.24
+      User hareee234
+      IdentityFile ~/.ssh/id_ed25519
+      LocalForward 18789 127.0.0.1:18789
+      LocalForward 18790 127.0.0.1:18790
 
