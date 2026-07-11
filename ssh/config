@@ -11,3 +11,10 @@ Host personal-linux HARI-LINUX-PC
       LocalForward 18789 127.0.0.1:18789
       LocalForward 18790 127.0.0.1:18790
 
+Host MEMS
+    HostName 100.102.86.85
+    User hareee234
+    IdentityFile ~/.ssh/id_ed25519
+    AddKeysToAgent yes
+    UseKeychain yes
+
