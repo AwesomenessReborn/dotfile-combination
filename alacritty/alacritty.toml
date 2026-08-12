@@ -1,0 +1,29 @@
+# Alacritty — entry point.
+#
+# This file deliberately contains NOTHING but imports.
+#
+# Why: Alacritty resolves config with two rules (both verified empirically on
+# 0.18.0-dev, not assumed):
+#   1. Values in the IMPORTING file override values from its imports.
+#   2. Among imports, LATER entries override earlier ones.
+#
+# So any key set here would be unoverridable by the platform files below. Keeping
+# this file import-only is what makes the platform overrides actually work.
+#
+# A missing import is logged at INFO and skipped — it is not an error. That is
+# how one entry point serves both machines: only the relevant platform file is
+# ever copied onto a given box, and the other import silently no-ops.
+#
+# Order matters — last wins:
+#   common  → shared base for every machine
+#   colors  → palette (swap this one line to re-theme)
+#   linux   → present only on Ubuntu
+#   macos   → present only on macOS
+
+[general]
+import = [
+  "~/.config/alacritty/common.toml",
+  "~/.config/alacritty/colors-iterm2-dark.toml",
+  "~/.config/alacritty/linux.toml",
+  "~/.config/alacritty/macos.toml",
+]

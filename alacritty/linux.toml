@@ -1,0 +1,21 @@
+# Alacritty — Ubuntu / Linux only.
+# Copy this to ~/.config/alacritty/ on Linux boxes ONLY. On macOS it must be
+# absent, so the import in alacritty.toml no-ops.
+
+[window]
+decorations = "Full"
+decorations_theme_variant = "Dark"
+
+[terminal.shell]
+program = "/usr/bin/zsh"
+args = ["-l"]
+
+# URL hints — opener is the platform-specific part.
+[[hints.enabled]]
+command = "xdg-open"
+hyperlinks = true
+post_processing = true
+persist = false
+mouse = { enabled = true, mods = "Control" }
+binding = { key = "U", mods = "Control|Shift" }
+regex = '''(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^<>"\s{-}\^⟨⟩`]+'''

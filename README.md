@@ -7,6 +7,7 @@ Personal dotfiles for macOS and Ubuntu, tracked for transfer between machines.
 ```
 dotfile-combination/
 ├── nvim/           Neovim config (kickstart.nvim + lazy.nvim, LSP, Telescope)
+├── alacritty/      Alacritty terminal config (shared macOS + Ubuntu, layered imports)
 ├── tmux/           tmux config (catppuccin theme, tpm plugins)
 ├── zsh/            Zsh config (.zshrc, .zprofile)
 ├── git/            Git config (.gitconfig, global ignore)
@@ -32,6 +33,20 @@ Clone the repo and manually copy configs to their standard locations on the targ
 Kickstart.nvim-based config with lazy.nvim. Plugins auto-install on first `nvim` launch.
 LSPs configured: pyright, lua_ls, clangd, jsonls (via mason).
 Key plugins: Telescope, blink.cmp, conform.nvim, nvim-treesitter, tokyonight colorscheme.
+
+### `alacritty/`
+Cross-platform terminal emulator config — the same setup on macOS and Ubuntu.
+See `alacritty/README.md` for the full layering explanation and install steps.
+
+- `alacritty.toml` is an **import-only** entry point; settings live in `common.toml`
+- Platform differences isolated to `linux.toml` / `macos.toml` — copy only the one
+  matching the machine, the other import is skipped harmlessly
+- Palette: iTerm2 "Default" dark (shared with `iterm2/`); Catppuccin Mocha included
+  as an alternate
+- Font: **JetBrainsMono Nerd Font Mono** 12pt (13 on macOS)
+
+> Alacritty is intentionally kept minimal — `tmux` is the workspace layer, so no
+> tabs/panes/sessions are configured at the emulator level.
 
 ### `tmux/`
 - Mouse support, status bar at top
@@ -78,7 +93,10 @@ htop process monitor preferences — column layout, sort order, color scheme.
 - Font: **RobotoMono Nerd Font** at 12pt (install from [nerdfonts.com](https://www.nerdfonts.com/font-downloads))
 - 5% transparency, blinking cursor, bold+italic enabled, 120×45 default window
 
-> **Linux:** iTerm2 is macOS-only. Recommended Linux equivalents: **Kitty** (feature-rich) or **Alacritty** (minimal). See `iterm2/README.md` for full setup instructions.
+> **Linux:** iTerm2 is macOS-only. **Resolved:** standardized on Alacritty for both
+> platforms — see `alacritty/`, which is now the maintained config. The palette here
+> is still the source of truth; `alacritty/colors-iterm2-dark.toml` is the port of it.
+> The RobotoMono font note below is superseded by JetBrainsMono Nerd Font.
 
 ### `claude/`
 Claude Code global config reference (macOS paths — adjust for Linux). Not required for machine setup.
@@ -87,7 +105,7 @@ Claude Code global config reference (macOS paths — adjust for Linux). Not requ
 
 1. **SSH key** — generate and add: `ssh-keygen -t ed25519 -C "you@email.com"` then add public key to GitHub
 2. **gh CLI auth** — `gh auth login`
-3. **Nerd Font** — install a Nerd Font in your terminal (e.g. JetBrainsMono Nerd Font) for icons in nvim + oh-my-posh
+3. **Nerd Font** — install **JetBrainsMono Nerd Font** (the `Mono` variant) for icons in nvim + oh-my-posh. Exact commands in `alacritty/README.md`.
 4. **conda/miniconda** — install separately: https://docs.conda.io/en/latest/miniconda.html
 5. **Ubuntu: `.zshrc.local`** — create `~/.zshrc.local` with Linux overrides and add `source ~/.zshrc.local` to the bottom of `~/.zshrc`
 6. **Tailscale** — `curl -fsSL https://tailscale.com/install.sh | sh` then `sudo tailscale up` to join your tailnet
