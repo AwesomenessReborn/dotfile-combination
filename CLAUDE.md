@@ -21,6 +21,7 @@ Where each config in the repo belongs on the system:
 | `tmux/.tmux.conf` | `~/.tmux.conf` |
 | `ssh/config` | `~/.ssh/config` |
 | `nvim/` | `~/.config/nvim` |
+| `alacritty/` | `~/.config/alacritty` — **platform-selective**, see below |
 | `ohmyposh/` | `~/.config/ohmyposh` |
 | `btop/` | `~/.config/btop` |
 | `neofetch/config.conf` | `~/.config/neofetch/config.conf` |
@@ -40,6 +41,21 @@ Based on [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim). All confi
 Key plugins: telescope, nvim-lspconfig + mason, blink.cmp, conform.nvim, treesitter, neo-tree, gitsigns, which-key. LSP servers configured: `pyright`, `lua_ls`, `clangd`, `jsonls`.
 
 Colorscheme: TokyoNight. Leader key: `<Space>`.
+
+### Alacritty (`alacritty/`)
+Unlike every other directory here, this one is **not** a straight copy — copy
+`alacritty.toml`, `common.toml`, `colors-*.toml`, plus **exactly one** of
+`linux.toml` / `macos.toml`. Copying both will apply macOS-only values
+(`decorations = "Buttonless"`, `option_as_alt`) on Linux, which is invalid.
+
+`alacritty.toml` is import-only by design: Alacritty lets the importing file
+override its imports, so any key set there would be unoverridable by the platform
+files. Later imports win, hence the order common → colors → platform. Missing
+imports are skipped at INFO level, which is what lets one entry point import both
+platform files. Full explanation in `alacritty/README.md`.
+
+Font: JetBrainsMono Nerd Font **Mono** variant (single-cell icons — required for
+Alacritty's fixed grid). Palette shared with `iterm2/`.
 
 ### Tmux (`tmux/`)
 Mouse enabled, status bar at top, true color, Catppuccin Mocha theme via tpm. Vim-style pane navigation (`h/j/k/l`).
