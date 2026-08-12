@@ -1,0 +1,72 @@
+# Alacritty — shared base, identical on macOS and Ubuntu.
+# Anything platform-specific belongs in linux.toml / macos.toml, not here.
+
+[general]
+live_config_reload = true
+
+[env]
+TERM = "alacritty"
+
+[window]
+padding = { x = 8, y = 8 }
+dynamic_padding = false
+opacity = 1.0
+startup_mode = "Windowed"
+dynamic_title = true
+# 120x45 to match the iTerm2 profile this setup was ported from.
+dimensions = { columns = 120, lines = 45 }
+
+[scrolling]
+# tmux keeps its own scrollback, but this covers the pre-tmux shell too.
+history = 100000
+multiplier = 3
+
+[font]
+size = 12.0
+# JetBrainsMono Nerd Font, "Mono" variant specifically: its icon glyphs are
+# constrained to a single cell, which is what Alacritty's fixed grid needs. The
+# plain "JetBrainsMono Nerd Font" variant has double-width icons that get
+# clipped here.
+# Install: see README.md in this directory.
+# Note: Alacritty does not render ligatures, so JetBrains Mono's -> != === show
+# as separate glyphs. Expected, not a misconfiguration.
+normal      = { family = "JetBrainsMono Nerd Font Mono", style = "Regular" }
+bold        = { family = "JetBrainsMono Nerd Font Mono", style = "Bold" }
+italic      = { family = "JetBrainsMono Nerd Font Mono", style = "Italic" }
+bold_italic = { family = "JetBrainsMono Nerd Font Mono", style = "Bold Italic" }
+builtin_box_drawing = true
+
+[cursor]
+style = { shape = "Block", blinking = "On" }
+unfocused_hollow = true
+thickness = 0.15
+
+[mouse]
+hide_when_typing = true
+
+[selection]
+save_to_clipboard = true
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
+
+[keyboard]
+# Platform-neutral bindings only. macOS Command-key equivalents live in
+# macos.toml, which is imported later and appends to this list.
+bindings = [
+  { key = "Equals",   mods = "Control",       action = "IncreaseFontSize" },
+  { key = "Minus",    mods = "Control",       action = "DecreaseFontSize" },
+  { key = "Key0",     mods = "Control",       action = "ResetFontSize" },
+
+  { key = "N",        mods = "Control|Shift", action = "CreateNewWindow" },
+  { key = "C",        mods = "Control|Shift", action = "Copy" },
+  { key = "V",        mods = "Control|Shift", action = "Paste" },
+  { key = "F",        mods = "Control|Shift", action = "SearchForward" },
+  { key = "B",        mods = "Control|Shift", action = "SearchBackward" },
+  { key = "Space",    mods = "Control|Shift", action = "ToggleViMode" },
+  { key = "F11",                              action = "ToggleFullscreen" },
+
+  # Shift+PageUp/Down is left unbound on purpose so it passes through to tmux.
+  { key = "K",        mods = "Control|Shift", action = "ClearHistory" },
+]
+
+[hints]
+alphabet = "jfkdls;ahgurieowpq"

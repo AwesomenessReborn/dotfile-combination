@@ -1,0 +1,45 @@
+# Alacritty — macOS only.
+# Copy this to ~/.config/alacritty/ on the Mac ONLY. On Linux it must be absent,
+# so the import in alacritty.toml no-ops.
+#
+# NOT YET TESTED ON THE MAC — written against the 0.18 config docs while setting
+# up the Ubuntu box. Verify on first run there.
+
+[window]
+# "Buttonless" and "Transparent" are macOS-only values; they are invalid on Linux,
+# which is part of why this file must not be copied to the Ubuntu box.
+decorations = "Buttonless"
+# Makes Option behave as Alt, so Meta-key bindings in tmux/nvim/readline work.
+option_as_alt = "Both"
+
+[font]
+# macOS renders slightly smaller at the same nominal point size.
+size = 13.0
+
+[terminal.shell]
+program = "/bin/zsh"
+args = ["-l"]
+
+[keyboard]
+# Appended to the shared list in common.toml. Command-key equivalents so the
+# usual macOS muscle memory keeps working.
+bindings = [
+  { key = "C",      mods = "Command",       action = "Copy" },
+  { key = "V",      mods = "Command",       action = "Paste" },
+  { key = "N",      mods = "Command",       action = "CreateNewWindow" },
+  { key = "F",      mods = "Command",       action = "SearchForward" },
+  { key = "Equals", mods = "Command",       action = "IncreaseFontSize" },
+  { key = "Minus",  mods = "Command",       action = "DecreaseFontSize" },
+  { key = "Key0",   mods = "Command",       action = "ResetFontSize" },
+  { key = "Return", mods = "Command|Shift", action = "ToggleFullscreen" },
+]
+
+# URL hints — macOS opener.
+[[hints.enabled]]
+command = "open"
+hyperlinks = true
+post_processing = true
+persist = false
+mouse = { enabled = true, mods = "Command" }
+binding = { key = "U", mods = "Command|Shift" }
+regex = '''(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^<>"\s{-}\^⟨⟩`]+'''
