@@ -17,7 +17,8 @@ dotfile-combination/
 ├── neofetch/       neofetch display config
 ├── htop/           htop process monitor config
 ├── iterm2/         iTerm2 color scheme (.itermcolors) + Linux equivalents (Alacritty, Kitty)
-├── claude/         Claude Code global instructions + settings
+├── claude/         Claude Code instructions, settings, statusline, and skills
+├── opencode/       OpenCode config, instructions, agents, and skills
 └── README.md       This file
 ```
 
@@ -26,6 +27,19 @@ dotfile-combination/
 Clone the repo and manually copy configs to their standard locations on the target machine. See the config details below for where each file belongs.
 
 > **Legacy script:** `archive/install.sh` exists as an optional convenience script that can auto-install dependencies and create symlinks, but the primary workflow is manual copy/transfer.
+
+### AI-guided setup on a new machine
+
+For an interactive setup instead of applying every preference automatically, open
+an AI coding agent in this repository and use:
+
+> Read `AI-BOOTSTRAP.md` and guide me through setting up this machine. Inspect
+> first, show me the proposed component plan, and ask before installing software,
+> replacing files, creating symlinks, or changing system settings.
+
+The bootstrap workflow inventories the machine, offers each OpenCode, Claude,
+shell, editor, prompt, and terminal component separately, handles platform-specific
+differences, and validates only the choices you approve.
 
 ## Config details
 
@@ -99,7 +113,22 @@ htop process monitor preferences — column layout, sort order, color scheme.
 > The RobotoMono font note below is superseded by JetBrainsMono Nerd Font.
 
 ### `claude/`
-Claude Code global config reference (macOS paths — adjust for Linux). Not required for machine setup.
+Claude Code global config reference (macOS paths — adjust for Linux):
+- `CLAUDE.md` — global instructions
+- `settings.json` — global settings (`settings.local.json` is intentionally excluded)
+- `statusline-command.sh` — custom statusline
+- `skills/` — locally maintained Claude skill variants
+
+### `opencode/`
+OpenCode global config snapshot:
+- `opencode.json` — providers, agents, permissions, and MCP configuration
+- `AGENTS.md` — global working instructions
+- `agents/` — custom agents such as `auto-explore`
+- `skills/` — locally maintained OpenCode skill variants
+
+Runtime files such as `node_modules`, package manifests, lockfiles, caches, and
+authentication data are intentionally excluded. OpenCode and Claude skills with the
+same name remain separate when their platform-specific frontmatter differs.
 
 ## Manual steps post-install
 

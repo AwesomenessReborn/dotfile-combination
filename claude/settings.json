@@ -2,6 +2,7 @@
   "permissions": {
     "defaultMode": "default"
   },
+  "model": "sonnet",
   "statusLine": {
     "type": "command",
     "command": "bash \"$HOME/.claude/statusline-command.sh\""
@@ -19,14 +20,12 @@
       }
     }
   },
-  "effortLevel": "medium",
-  "advisorModel": "opus",
+  "effortLevel": "high",
   "editorMode": "normal",
   "verbose": true,
   "preferredNotifChannel": "auto",
   "autoCompactEnabled": false,
   "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
-  "skipAutoPermissionPrompt": true,
-  "model": "opus"
+  "skipAutoPermissionPrompt": true
 }

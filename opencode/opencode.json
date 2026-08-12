@@ -1,0 +1,367 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  "provider": {
+    "github-copilot": {
+      "models": {
+        "gpt-5.5": {
+          "limit": { "context": 400000, "input": 272000, "output": 128000 }
+        },
+        "gpt-5.4": {
+          "limit": { "context": 400000, "input": 272000, "output": 128000 }
+        },
+        "gpt-5.6-luna": {
+          "limit": { "context": 400000, "input": 272000, "output": 128000 }
+        },
+        "gpt-5.6-sol": {
+          "limit": { "context": 400000, "input": 272000, "output": 128000 }
+        },
+        "gpt-5.6-terra": {
+          "limit": { "context": 400000, "input": 272000, "output": 128000 }
+        }
+      }
+    }
+  },
+
+  "compaction": {
+    "auto": true,
+    "reserved": 32000
+  },
+
+  "model": "openai/gpt-5.6-sol",
+  "default_agent": "auto",
+  "mcp": {
+    "notion": {
+      "type": "remote",
+      "url": "https://mcp.notion.com/mcp",
+      "enabled": true
+    }
+  },
+  "lsp": true,
+  "permission": {
+    "*": "ask",
+    "read": "allow",
+    "glob": "allow",
+    "list": "allow",
+    "question": "allow",
+    "bash": {
+      "*": "ask",
+      "pwd": "allow",
+      "ls": "allow",
+      "ls *": "allow",
+      "opencode debug*": "allow"
+    }
+  },
+  "agent": {
+    "plan": {
+      "permission": {
+        "read": "allow",
+        "glob": "allow",
+        "list": "allow",
+        "edit": "deny",
+        "bash": {
+          "*": "ask",
+          "pwd": "allow",
+          "ls": "allow",
+          "ls *": "allow"
+        },
+        "task": "ask",
+        "skill": "ask",
+        "external_directory": "ask"
+      },
+      "model": "openai/gpt-5.6-sol",
+      "variant": "high",
+      "color": "#2CE66B"
+    },
+    "build": {
+      "permission": {
+        "read": {
+          "*": "allow",
+          "*.env": "deny",
+          "*.env.*": "deny",
+          "*.env.example": "allow"
+        },
+        "glob": "allow",
+        "list": "allow",
+        "edit": "ask",
+        "bash": {
+          "*": "ask",
+
+          "pwd": "allow",
+          "ls": "allow",
+          "ls *": "allow",
+
+          "git status": "allow",
+          "git status *": "allow",
+          "git diff": "allow",
+          "git diff *": "allow",
+          "git log": "allow",
+          "git log *": "allow",
+
+          "git add": "deny",
+          "git add *": "deny",
+          "git rm": "deny",
+          "git rm *": "deny",
+
+          "git commit": "deny",
+          "git commit *": "deny",
+          "git push": "deny",
+          "git push *": "deny",
+          "git tag": "deny",
+          "git tag *": "deny",
+
+          "git reset": "deny",
+          "git reset *": "deny",
+          "git restore": "deny",
+          "git restore *": "deny",
+          "git clean": "deny",
+          "git clean *": "deny",
+          "git checkout": "deny",
+          "git checkout *": "deny",
+          "git switch": "deny",
+          "git switch *": "deny",
+          "git merge": "deny",
+          "git merge *": "deny",
+          "git rebase": "deny",
+          "git rebase *": "deny",
+          "git cherry-pick": "deny",
+          "git cherry-pick *": "deny",
+          "git revert": "deny",
+          "git revert *": "deny",
+          "git am": "deny",
+          "git am *": "deny"
+        },
+        "task": "ask",
+        "skill": {
+          "*": "ask",
+          "smart-commit": "deny",
+          "git-*": "deny"
+        },
+        "external_directory": "ask"
+      },
+      "model": "openai/gpt-5.6-sol",
+      "variant": "medium",
+      "color": "#FFB020",
+      "prompt": "After finishing a change, provide a concise completion footer with: files changed, checks run or skipped, suggested commit message, whether review is recommended, and a context-clear recommendation. Keep this short. Never commit, push, tag, stage, or rewrite git history under any circumstances. After finishing changes, provide files changed, checks run or skipped, suggested commit message, whether review is recommended, and whether context clearing is recommended. The review agent is the only agent allowed to stage and commit. Recommend review when the change touches multiple files, public interfaces, tests fail, behavior changes, data/schema/config changes, security/auth, concurrency, embedded/firmware safety, model training pipelines, or production deployment. Recommend clearing context when the task is fully complete (changes made, checks pass, commit ready or committed) and no obvious follow-ups remain. Skip the context-clear recommendation when tests are failing, review is pending, or there are clear next steps. "
+    },
+    "review": {
+      "description": "Reviews code changes for correctness, scope creep, and regressions without editing files",
+      "mode": "primary",
+      "model": "openai/gpt-5.6-sol",
+      "variant": "high",
+      "color": "#FF4D5E",
+      "permission": {
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "list": "allow",
+        "lsp": "allow",
+        "edit": "deny",
+        "bash": {
+          "*": "ask",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow"
+        },
+        "task": "ask",
+        "skill": "ask",
+        "external_directory": "ask"
+      },
+      "prompt": "You are the review agent. Default to DIFF-ONLY REVIEW.\n\nReview only the provided review bundle unless explicitly told to escalate. The bundle may include the goal, plan, git diff, changed files, relevant changed file contents, test/build output, and touched interfaces/configs.\n\nDo not request or ingest full repo context, full chat history, massive logs, unrelated unchanged files, or previous failed attempts by default.\n\n\nPrioritize correctness, edge cases, interface/API mismatches, security/data-loss risks, test/build failures, and maintainability.\n\nOutput:\n- Verdict: PASS / PASS WITH NOTES / NEEDS CHANGES / ESCALATE\n- Blocking issues\n- Non-blocking issues\n- Minimal fixes\n- Escalation needed: yes/no\n\nIf verdict is PASS or PASS WITH NOTES:\n- Provide a concise summary of what was changed and why.\n- Remind the user to clear context or start a new session to save on token usage budget.\n\nEscalate only when missing architecture/context is required, public interfaces changed and callers are not visible, tests fail for unclear reasons, or the change touches security/auth/data deletion/migrations/concurrency/firmware/production deployment."
+    },
+    "auto": {
+      "description": "High-autonomy agent for low-stakes / personal work with guarded escalation on git, dependencies, infra, migrations, secrets, and destructive commands",
+      "mode": "all",
+      "model": "openai/gpt-5.6-sol",
+      "variant": "medium",
+      "color": "#22D3EE",
+      "permission": {
+        "read": {
+          "*": "allow",
+          "**/.env": "deny",
+          "**/.env.*": "deny",
+          "**/id_rsa": "deny",
+          "**/id_dsa": "deny",
+          "**/id_ecdsa": "deny",
+          "**/id_ed25519": "deny",
+          "~/.netrc": "deny",
+          "~/.npmrc": "deny",
+          "~/.pypirc": "deny",
+          "~/.kube/config": "deny",
+          "~/.docker/config.json": "deny",
+          "~/.local/share/opencode/auth.json": "deny",
+          "~/Library/Keychains/**": "deny",
+          "**/*credentials*.json": "ask",
+          "**/*service-account*.json": "ask",
+          "**/*secret*.json": "ask",
+          "**/*secret*.yaml": "ask",
+          "**/*secret*.yml": "ask",
+          "**/*secret*.toml": "ask",
+          "**/*.pem": "ask",
+          "**/*.key": "ask",
+          "**/.env.example": "allow",
+          "**/.env.template": "allow"
+        },
+        "glob": "allow",
+        "grep": {
+          "*": "allow",
+          "**/.env": "deny",
+          "**/.env.*": "deny",
+          "**/id_rsa": "deny",
+          "**/id_dsa": "deny",
+          "**/id_ecdsa": "deny",
+          "**/id_ed25519": "deny",
+          "~/.netrc": "deny",
+          "~/.npmrc": "deny",
+          "~/.pypirc": "deny",
+          "~/.kube/config": "deny",
+          "~/.docker/config.json": "deny",
+          "~/.local/share/opencode/auth.json": "deny",
+          "~/Library/Keychains/**": "deny",
+          "**/*credentials*.json": "ask",
+          "**/*service-account*.json": "ask",
+          "**/*secret*.json": "ask",
+          "**/*secret*.yaml": "ask",
+          "**/*secret*.yml": "ask",
+          "**/*secret*.toml": "ask",
+          "**/*.pem": "ask",
+          "**/*.key": "ask",
+          "**/.env.example": "allow",
+          "**/.env.template": "allow"
+        },
+        "list": "allow",
+        "lsp": "allow",
+        "edit": {
+          "*": "allow",
+          "**/package.json": "ask",
+          "**/*.lock": "ask",
+          "**/yarn.lock": "ask",
+          "**/pnpm-lock.yaml": "ask",
+          "opencode.json": "ask",
+          "**/opencode.json": "ask",
+          ".github/**": "ask",
+          "**/Dockerfile": "ask",
+          "**/docker-compose*": "ask",
+          "**/migrations/**": "ask",
+          "**/*.env": "deny",
+          "**/*.env.*": "deny"
+        },
+        "bash": {
+          "*": "ask",
+          "pwd": "allow",
+          "ls*": "allow",
+          "cat*": "allow",
+          "grep*": "allow",
+          "rg*": "allow",
+          "find*": "allow",
+          "head*": "allow",
+          "tail*": "allow",
+          "file*": "allow",
+          "stat*": "allow",
+          "wc*": "allow",
+          "du*": "allow",
+          "tree*": "allow",
+          "realpath*": "allow",
+          "dirname*": "allow",
+          "basename*": "allow",
+          "pytest*": "allow",
+          "npm test*": "allow",
+          "npm run test*": "allow",
+          "git status*": "allow",
+          "git diff*": "allow",
+          "git log*": "allow",
+          "git show*": "allow",
+          "git blame*": "allow",
+          "git rev-parse*": "allow",
+          "git ls-files*": "allow",
+          "git ls-tree*": "allow",
+          "git show-ref*": "allow",
+          "git for-each-ref*": "allow",
+          "git merge-base*": "allow",
+          "git describe*": "allow",
+          "git shortlog*": "allow",
+          "git name-rev*": "allow",
+          "*install*": "ask",
+          "brew*": "ask",
+          "git add*": "ask",
+          "git commit*": "ask",
+          "git push*": "ask",
+          "git branch*": "ask",
+          "git checkout*": "ask",
+          "git switch*": "ask",
+          "git reset*": "ask",
+          "git rebase*": "ask",
+          "git merge*": "ask",
+          "git stash*": "ask",
+          "git tag*": "ask",
+          "git reflog": "allow",
+          "git reflog show*": "allow",
+          "git reflog exists*": "allow",
+          "git branch --show-current": "allow",
+          "git remote -v": "allow",
+          "git remote get-url*": "allow",
+          "git worktree list*": "allow",
+          "git stash list*": "allow",
+          "find *-delete*": "deny",
+          "find *-exec*": "ask",
+          "find *-execdir*": "ask",
+          "find *-ok*": "ask",
+          "find *-okdir*": "ask",
+          "cat *.env*": "deny",
+          "grep *.env*": "deny",
+          "rg *.env*": "deny",
+          "head *.env*": "deny",
+          "tail *.env*": "deny",
+          "cat *.env.example": "allow",
+          "grep *.env.example": "allow",
+          "rg *.env.example": "allow",
+          "head *.env.example": "allow",
+          "tail *.env.example": "allow",
+          "rm -rf*": "deny",
+          "dd*": "deny",
+          "mkfs*": "deny",
+          "chmod -R 777*": "deny",
+          ":(){*": "deny"
+        },
+        "task": {
+          "*": "ask",
+          "explore": "deny",
+          "auto-explore": "allow"
+        },
+        "skill": {
+          "*": "allow",
+          "microsoft-foundry": "ask",
+          "deploy-model": "ask",
+          "preset": "ask",
+          "customize": "ask",
+          "finetuning": "ask",
+          "smart-commit": "deny",
+          "git-*": "deny"
+        },
+        "external_directory": {
+          "*": "allow",
+          "~/.ssh/**": "deny",
+          "~/.gnupg/**": "deny",
+          "~/.aws/**": "deny",
+          "~/.azure/**": "deny",
+          "~/.config/gcloud/**": "deny",
+          "~/.kube/config": "deny",
+          "~/.docker/config.json": "deny",
+          "~/.netrc": "deny",
+          "~/.npmrc": "deny",
+          "~/.pypirc": "deny",
+          "~/.local/share/opencode/auth.json": "deny",
+          "~/Library/Keychains/**": "deny"
+        },
+        "todowrite": "allow",
+        "question": "allow",
+        "webfetch": "allow",
+        "websearch": "allow"
+      },
+      "prompt": "You are the auto agent: high autonomy on personal / low-stakes work. Prefer\nworking on a dedicated dev/agent/<short-task> branch; if you are not on one, say\nso and ask before any significant change. Make the smallest correct change.\nShells may be non-interactive and may not source .zshrc — follow the PATH rules in\nAGENTS.md (do not assume bare python/node/npm; use the conda torch-default python\nor the repo's own env). Never stage, commit, push, branch, or rewrite git history\nwithout explicit approval — instead surface a concise summary of total files\nchanged plus a suggested commit message and let me decide. After changes, run the\nnarrowest useful verification. Call out risks and anything you escalated. For\ndelegated read-only repository, filesystem, Git history, or documentation research,\nuse the auto-explore subagent instead of the built-in explore subagent."
+    },
+    "explore": {
+      "model": "openai/gpt-5.6-sol"
+    }
+  }
+}

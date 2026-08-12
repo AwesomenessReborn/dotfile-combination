@@ -1,7 +1,5 @@
 # Global Preferences
 
-> **Note:** Paths below are from macOS. On Ubuntu/Linux, adjust paths accordingly (e.g. no `/opt/homebrew`, conda/fnm at different locations).
-
 ## Storage Strategy (apply to any project with data/code separation)
 
 **Code → Local + Git. Data → Google Drive (streamed).**
@@ -42,6 +40,43 @@
   2. conda run: `/Users/hareee234/miniconda3/bin/conda run -n torch-default python script.py`
 - Install packages: `/Users/hareee234/miniconda3/bin/conda run -n torch-default pip install <pkg>`
 - Never attempt bare `python`, `which python`, or `conda activate` in Bash tool calls
+
+## Oh-My-Posh Prompt Theme
+
+- Config source of truth: `~/.dotfiles/ohmyposh/default.json`
+- Deployed to: `~/.config/ohmyposh/default.json` (on both Mac and Linux)
+- Detailed segment docs: `~/.dotfiles/ohmyposh/README.md`
+
+**Installation:**
+- macOS: `brew install oh-my-posh`
+- Linux: `curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin` (adds to `~/.local/bin`)
+
+**Shell init line** (same on both platforms, lives in `~/.zshrc`):
+```
+eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/default.json)"
+```
+
+**Applying dotfile changes on Linux after `git pull`:**
+```bash
+cp ~/.dotfiles/ohmyposh/default.json ~/.config/ohmyposh/default.json
+exec zsh   # or source ~/.zshrc
+```
+
+**Prompt layout (current):**
+```
+[15:04] user@hostname  zsh
+ x0  123ms   main  ✎ 1 | ✔ 2    3.12.1   v24.11.0
+ ~/Dev/projects/my-repo
+❯
+```
+| Line | Content |
+|---|---|
+| 1 | Time · user@hostname · OS icon · shell name |
+| 2 | Exit code · exec time · git status · Python · Node |
+| 3 | Full path |
+| 4 | Prompt char (`❯`, `!` if root) |
+
+**Auto-upgrade is disabled** — update manually via `brew upgrade oh-my-posh` (Mac) or re-run the curl install (Linux).
 
 ## Node.js / fnm Environment
 

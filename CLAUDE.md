@@ -28,6 +28,12 @@ Where each config in the repo belongs on the system:
 | `htop/htoprc` | `~/.config/htop/htoprc` |
 | `claude/CLAUDE.md` | `~/.claude/CLAUDE.md` |
 | `claude/settings.json` | `~/.claude/settings.json` |
+| `claude/statusline-command.sh` | `~/.claude/statusline-command.sh` |
+| `claude/skills/` | `~/.claude/skills/` |
+| `opencode/opencode.json` | `~/.config/opencode/opencode.json` |
+| `opencode/AGENTS.md` | `~/.config/opencode/AGENTS.md` |
+| `opencode/agents/` | `~/.config/opencode/agents/` |
+| `opencode/skills/` | `~/.config/opencode/skills/` |
 
 ## Architecture
 
@@ -63,6 +69,11 @@ Mouse enabled, status bar at top, true color, Catppuccin Mocha theme via tpm. Vi
 ### Git (`git/`)
 - `.gitconfig`: Uses `gh auth git-credential` for GitHub auth (Homebrew path on macOS)
 - `ignore`: Global gitignore — currently ignores `.claude/settings.local.json`
+
+### AI tooling (`claude/`, `opencode/`)
+- Track shareable instructions, settings, statusline scripts, custom agents, and skills.
+- Keep Claude and OpenCode skill variants separate when their frontmatter differs.
+- Do not track local settings, authentication files, caches, package/runtime files, or session history.
 
 ### Platform differences
 macOS paths are hardcoded in `.zshrc` and `.gitconfig` (Homebrew at `/opt/homebrew`). Linux overrides should go in `~/.zshrc.local`.
