@@ -8,9 +8,14 @@
 [window]
 # "Buttonless" and "Transparent" are macOS-only values; they are invalid on Linux,
 # which is part of why this file must not be copied to the Ubuntu box.
-decorations = "Buttonless"
+decorations = "Full"
 # Makes Option behave as Alt, so Meta-key bindings in tmux/nvim/readline work.
 option_as_alt = "Both"
+# Explicitly off. This is already the default, but it is stated here because it
+# is the setting that decides whether the transparency in common.toml reads as a
+# clean see-through or as a frosted, blended pane. Plain opacity is wanted, so
+# blur stays off. macOS/KDE-Wayland only, hence this file rather than common.
+blur = false
 
 [font]
 # macOS renders slightly smaller at the same nominal point size.

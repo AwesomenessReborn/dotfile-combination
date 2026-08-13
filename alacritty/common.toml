@@ -10,6 +10,13 @@ TERM = "alacritty"
 [window]
 padding = { x = 8, y = 8 }
 dynamic_padding = false
+# Fully opaque, and it has to stay that way to keep the macOS drop shadow.
+# Any value below 1.0 makes the window non-opaque, and macOS does not draw
+# shadows on non-opaque windows. Alacritty exposes no has_shadow setting to
+# work around this (its window options are position/decorations/startup_mode/
+# dynamic_padding/dynamic_title/identity/opacity/blur/option_as_alt/
+# resize_increments/padding/dimensions/decorations_theme_variant/level), so
+# shadow and transparency are strictly either/or. Shadow won.
 opacity = 1.0
 startup_mode = "Windowed"
 dynamic_title = true
@@ -42,7 +49,10 @@ unfocused_hollow = true
 thickness = 0.15
 
 [mouse]
-hide_when_typing = true
+# Off: when true, the pointer vanishes the moment you type and only returns on
+# the next mouse movement, which reads as "the cursor disappeared into the
+# window" rather than as an intentional feature.
+hide_when_typing = false
 
 [selection]
 save_to_clipboard = true
@@ -66,7 +76,21 @@ bindings = [
 
   # Shift+PageUp/Down is left unbound on purpose so it passes through to tmux.
   { key = "K",        mods = "Control|Shift", action = "ClearHistory" },
+
+  # Shift+Enter → newline instead of submit, in Claude Code and other REPLs.
+  # A terminal sends plain CR for both Enter and Shift+Enter, so the program
+  # cannot tell them apart; the shift has to be encoded here. ESC+CR is the
+  # sequence Claude Code's own /terminal-setup installs on iTerm2, which does
+  # not support Alacritty — hence setting it by hand.
+  # Distinct from Command|Shift+Return (fullscreen, macos.toml): Alacritty
+  # matches modifiers exactly, so the two do not collide.
+  { key = "Return",   mods = "Shift",         chars = "\u001B\r" },
 ]
 
 [hints]
 alphabet = "jfkdls;ahgurieowpq"
+
+[font.offset]
+# Horizontal padding added between cells — see font-try --help.
+x = 1
+y = 0
