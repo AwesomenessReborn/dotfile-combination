@@ -76,7 +76,35 @@ Mouse enabled, status bar at top, true color, Catppuccin Mocha theme via tpm. Vi
 - Do not track local settings, authentication files, caches, package/runtime files, or session history.
 
 ### Platform differences
-macOS paths are hardcoded in `.zshrc` and `.gitconfig` (Homebrew at `/opt/homebrew`). Linux overrides should go in `~/.zshrc.local`.
+
+**Most of this repo is a macOS snapshot.** These files contain hardcoded macOS
+paths or Mac-only values and must be **adapted, not copied**, on Linux:
+
+| File | Mac-specific content |
+|---|---|
+| `zsh/.zshrc`, `zsh/.zprofile` | Homebrew at `/opt/homebrew`, miniconda at `/Users/...` |
+| `git/.gitconfig` | Credential helper at `/opt/homebrew/bin/gh` |
+| `ssh/config` | `UseKeychain yes` (macOS-only directive) |
+| `claude/CLAUDE.md` | `/Users/...` conda paths, Google Drive CloudStorage mount, Homebrew fnm |
+| `opencode/AGENTS.md` | `/Users/hareee234/miniconda3/envs/torch-default/...` |
+| `opencode/opencode.json` | `github-copilot` provider + `openai/gpt-5.6-*` models; auth and model availability are per-machine |
+| `scripts/mac-health.sh` | macOS-only entirely |
+| `alacritty/macos.toml` | Copy `linux.toml` instead — see the Alacritty section above |
+
+Safe to copy verbatim on either platform: `nvim/`, `tmux/`, `btop/`, `htop/`,
+`neofetch/`, `ohmyposh/`, `claude/statusline-command.sh` (branches on `uname`),
+`claude/skills/`, `opencode/agents/`, `opencode/skills/`.
+
+Linux shell overrides should go in `~/.zshrc.local` — **except** on `hari-linux-pc`,
+where `~/.zshrc` is maintained directly. See `HARI-LINUX-PC-SETUP.md`.
+
+Deployed Linux adaptations live only on their machine, not in this repo. After a
+`git pull`, re-adapt rather than re-copy. `AI-BOOTSTRAP.md` Step 3 covers the process.
+
+### Claude Code settings.json
+`claude/settings.json` cannot be deployed by an agent — Claude Code's permission
+classifier blocks writes to its own settings file (it governs permission modes).
+Apply that one by hand or via `/config`.
 
 ## Secrets & `.gitignore`
 
