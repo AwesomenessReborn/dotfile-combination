@@ -28,7 +28,8 @@
     "reserved": 32000
   },
 
-  "model": "openai/gpt-5.6-sol",
+  "model": "github-copilot/gpt-5.6-sol",
+  "small_model": "github-copilot/gpt-5.6-sol",
   "default_agent": "auto",
   "mcp": {
     "notion": {
@@ -69,7 +70,7 @@
         "skill": "ask",
         "external_directory": "ask"
       },
-      "model": "openai/gpt-5.6-sol",
+      "model": "github-copilot/gpt-5.6-sol",
       "variant": "high",
       "color": "#2CE66B"
     },
@@ -139,7 +140,7 @@
         },
         "external_directory": "ask"
       },
-      "model": "openai/gpt-5.6-sol",
+      "model": "github-copilot/gpt-5.6-sol",
       "variant": "medium",
       "color": "#FFB020",
       "prompt": "After finishing a change, provide a concise completion footer with: files changed, checks run or skipped, suggested commit message, whether review is recommended, and a context-clear recommendation. Keep this short. Never commit, push, tag, stage, or rewrite git history under any circumstances. After finishing changes, provide files changed, checks run or skipped, suggested commit message, whether review is recommended, and whether context clearing is recommended. The review agent is the only agent allowed to stage and commit. Recommend review when the change touches multiple files, public interfaces, tests fail, behavior changes, data/schema/config changes, security/auth, concurrency, embedded/firmware safety, model training pipelines, or production deployment. Recommend clearing context when the task is fully complete (changes made, checks pass, commit ready or committed) and no obvious follow-ups remain. Skip the context-clear recommendation when tests are failing, review is pending, or there are clear next steps. "
@@ -147,7 +148,7 @@
     "review": {
       "description": "Reviews code changes for correctness, scope creep, and regressions without editing files",
       "mode": "primary",
-      "model": "openai/gpt-5.6-sol",
+      "model": "github-copilot/gpt-5.6-sol",
       "variant": "high",
       "color": "#FF4D5E",
       "permission": {
@@ -172,7 +173,7 @@
     "auto": {
       "description": "High-autonomy agent for low-stakes / personal work with guarded escalation on git, dependencies, infra, migrations, secrets, and destructive commands",
       "mode": "all",
-      "model": "openai/gpt-5.6-sol",
+      "model": "github-copilot/gpt-5.6-sol",
       "variant": "medium",
       "color": "#22D3EE",
       "permission": {
@@ -361,7 +362,7 @@
       "prompt": "You are the auto agent: high autonomy on personal / low-stakes work. Prefer\nworking on a dedicated dev/agent/<short-task> branch; if you are not on one, say\nso and ask before any significant change. Make the smallest correct change.\nShells may be non-interactive and may not source .zshrc — follow the PATH rules in\nAGENTS.md (do not assume bare python/node/npm; use the conda torch-default python\nor the repo's own env). Never stage, commit, push, branch, or rewrite git history\nwithout explicit approval — instead surface a concise summary of total files\nchanged plus a suggested commit message and let me decide. After changes, run the\nnarrowest useful verification. Call out risks and anything you escalated. For\ndelegated read-only repository, filesystem, Git history, or documentation research,\nuse the auto-explore subagent instead of the built-in explore subagent."
     },
     "explore": {
-      "model": "openai/gpt-5.6-sol"
+      "model": "github-copilot/gpt-5.6-sol"
     }
   }
 }
