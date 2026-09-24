@@ -8,12 +8,23 @@ fi
 
 command -v oh-my-posh >/dev/null 2>&1 && eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/default.json)"
 
+# Keep enough command history for long-term Ctrl-R searches.
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=50000
+SAVEHIST=50000
+
+# Show more matches in the Ctrl-R history picker (fzf defaults to 40%).
+FZF_CTRL_R_OPTS='--height 70%'
 command -v fzf >/dev/null 2>&1 && source <(fzf --zsh)
 
 # fnm (node version manager) — macOS via brew, Linux via ~/.local/bin
 FNM_PATH="/opt/homebrew/opt/fnm/bin"
 [[ -d "$FNM_PATH" ]] && export PATH="$FNM_PATH:$PATH"
 command -v fnm >/dev/null 2>&1 && eval "$(fnm env --use-on-cd --shell zsh)"
+
+# ST ISPU toolchain (pinned for reproducible builds)
+export ISPU_TOOLCHAIN="/Users/hareee234/Dev/tools/ispu-toolchain-1.6.0-universal2-mac"
+export PATH="$ISPU_TOOLCHAIN/bin:$PATH"
 
 # zsh-autosuggestions — brew (macOS) or system/user paths (Linux)
 for _zsh_autosuggest in \
@@ -121,3 +132,5 @@ fi
 
 # Per-machine overrides (not tracked in dotfiles) — Linux paths, work-box tweaks, etc.
 [[ -r "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
